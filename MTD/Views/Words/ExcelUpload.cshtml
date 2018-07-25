@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "ExcelUpload";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+@section MainContent{
+    <div class="main-content">
+        <div class="main-content-inner">
+            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active red bigger-120">Quản lý từ điển</li>
+                    <li class="active red bigger-120">Cập nhật từ file Excel</li>
+                </ul>
+            </div>
+            <div class="col-sm-4">
+                <div class="widget-box">
+                    <div class="widget-header">
+                        <h4 class="widget-title">
+                            Cập nhật danh sách từ vựng</h4>
+                        <div class="widget-toolbar">
+                            <a href="#" data-action="collapse"><i class="ace-icon fa fa-chevron-up"></i></a>
+                            @*<a href="#" data-action="close">
+					    <i class="ace-icon fa fa-times"></i>
+				    </a>*@
+                        </div>
+                    </div>
+                    @using (Html.BeginForm("ExcelUpload", "Words", FormMethod.Post, new { id = 1, enctype = "multipart/form-data" }))
+                    {
+                        <div class="widget-body" style="display: block;">
+                            <div class="widget-main">
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                    <label class="col-sm-3" for="form-field-7">
+                                    Chọn file</label>
+                                        <input type="file" id="id-input-file-2" name="file" />
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <input type="checkbox" class="ace input-lg" id="deleteOld" name="deleteOld" /><span class="lbl bigger-120"></span><label class="" for="deleteOld">Xóa từ cũ</label>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <input type="checkbox" class="ace input-lg" id="passDuplicate" name="passDuplicate" checked="true"/><span class="lbl bigger-120"></span><label class="" for="passDuplicate">Loại bỏ những từ trùng lặp</label>
+                                    </div>
+                                </div>
+                                <label>
+                                    <button class="btn btn-info" type="submit" value="Update">
+                                        Cập nhật</button>
+                                </label>
+                            </div>
+                        </div>                
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+    $(function () {
+        $('input[type=file]').change(function () {
+            var val = $(this).val().toLowerCase(),
+            regex = new RegExp("(.*?)\.(xls|xlsx)$");
+
+            if (!(regex.test(val))) {
+                $(this).val('');
+                alert('Xin hãy chọn file Excel');
+            }
+        });
+    });
+</script>
+}

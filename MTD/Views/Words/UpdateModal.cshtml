@@ -1,0 +1,111 @@
+﻿@model MTD.Models.WordsModel
+<div class="modal-dialog">
+	<div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="orange center lighter bigger"><i class="ace-icon fa fa-users blue"></i>CẬP NHẬT TỪ VỰNG</h4>
+            
+        </div>
+        @using (Ajax.BeginForm("UpdateModal", "Words", FormMethod.Post,
+                            new AjaxOptions
+                            {
+                                InsertionMode = InsertionMode.Replace,
+                                HttpMethod = "POST"
+                            }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <fieldset>
+				            <label class="block clearfix">
+                                <span class="block input-icon input-icon-right">
+						            @Html.DropDownListFor(m => m.Dict_Type, new SelectList(@Model.ListDictType, "Value", "Text"), new { @class = "form-control" })
+                                    <i class="ace-icon add-on fa fa-envelope red"></i>
+					            </span>
+				            </label>
+
+				            <label class="block clearfix">
+					            <span class="block input-icon input-icon-right">
+						            @Html.TextBoxFor(m => m.Key  , new { @class = "form-control", @placeholder = "Từ vựng"})
+                                    @Html.ValidationMessageFor(m => m.Key)
+						            <i class="ace-icon fa fa-user red"></i>
+					            </span>
+				            </label>
+
+				            <label class="clearfix" style="display:flex;">
+					            <span class="block input-icon input-icon-right">
+                                    @Html.TextBoxFor(m => m.ShortCut, new { @class = "form-control", @placeholder = "Từ viết tắt" })
+                                    <i class="ace-icon fa fa-lock red"></i>
+					            </span>
+				            </label>
+
+                            <label class="block clearfix">
+					            <div class="wysiwyg-editor" id="editor1">
+                                 @Html.Raw(Model.Value)
+                                </div>
+                                @Html.HiddenFor(m => m.Value)
+				            </label>
+
+				            <div class="clearfix">
+					            <button type="button" id="btnRegister" class="width-100 btn btn-sm btn-success">
+						            <span class="orange bigger-150">Đăng ký</span>
+						            <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+					            </button>
+				            </div>
+			            </fieldset>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    var message = '@Html.Raw(Model.Message)';
+    var result = '@Model.Result';
+    if (result == '1') {
+        if (message.length > 0) {
+            alert(message);
+        }
+        $('#register_model').modal('hide');
+        location.reload(false)
+    } else if (result < 0) {
+        alert(message);
+        //$('#register_model').html(data);
+    }
+    $('#btnRegister').on('click', function (e) {
+        var self = $(this);
+        $.ajax({
+            url: '@Url.Action("RegisterMember","Template1")',
+            type: 'POST',
+            async: false,
+            data: self.closest('form').serialize(),
+            success: function (data) {
+                var message = '@Html.Raw(Model.Message)';
+                var result = '@Model.Result';
+                if (result == '1') {
+                    if (message.length > 0) {
+                        alert(message);
+                    }
+                    $('#register_model').modal('hide');
+                    location.reload(false)
+                } else {
+                    if (result == '0' && message.length > 0) {
+                        alert(message);
+                    }
+                    $('#register_model').html(data);
+                }
+            }
+        });
+        e.preventDefault();
+    });
+
+    $(document).on('click', '#btnRegistryAgency', function () {
+        var url = '@Url.Action("RegisterAgency1","Template1")';
+        $.get(url, function (data) {
+            $('#register-container').html(data);
+            $('#register_model').modal('show');
+        });
+    });
+
+</script>

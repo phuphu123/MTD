@@ -1,4 +1,4 @@
-﻿@using MTD.Helper;
+﻿@using MTD.Helpers;
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -9,7 +9,7 @@
 		<meta name="description" content="top menu &amp; navigation" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
-        <link rel="icon" href="@Url.Content("~/Assets/Images/home-default.png")">
+        <link rel="icon" href="@Url.Content("~/Assets/images/logo.png")">
 
 		<!-- bootstrap & fontawesome -->
         <link href="@Url.Content("~/Assets/css/bootstrap.min.css")" rel="stylesheet" type="text/css" />
@@ -59,6 +59,15 @@
 
             .validation-summary-valid {
                 display: none;
+            }
+            
+            th {
+               text-align: center;   
+            }
+            .btn
+            {
+                border: 1px solid #FFF !important;
+                border-radius: 4px;
             }
         </style>
 		<!-- inline styles related to this page -->
@@ -127,12 +136,7 @@
                 @*@Html.Action("BoxLink", "Template1", new { @Position = 1 })*@
                 </div>
 			</div>
-
-
 			@Html.Partial("_BoxFooter")
-
-
-
 			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
 				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
 			</a>
@@ -157,10 +161,11 @@
         <script src="@Url.Content("~/Assets/js/ace.min.js")" type="text/javascript"></script>
 
         
-       @*<script src="@Url.Content("~/Assets/Template1/js/moment.min.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Assets/Template1/js/bootstrap-timepicker.min.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Assets/Template1/js/daterangepicker.min.js")" type="text/javascript"></script>
-        <script src="@Url.Content("~/Assets/Template1/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>*@
+       <script src="@Url.Content("~/Assets/js/moment.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Assets/js/bootstrap-timepicker.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Assets/js/daterangepicker.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Assets/js/bootstrap-datetimepicker.min.js")" type="text/javascript"></script>
+        <script src="@Url.Content("~/Assets/js/bootstrap-datepicker.min.js")" type="text/javascript"></script>
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 		    jQuery(function ($) {

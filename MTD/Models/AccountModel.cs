@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using MTD.DAL;
-using MTD.Helper;
+using MTD.Helpers;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -65,12 +65,18 @@ namespace MTD.Models
         public int RoleId { get; set; }
         public string RoleText { get; set; }
 
+        // Danh sách quyền
         public List<SelectListItem> ListRole { get; set; }
+
+        // Danh sách trạng thái
+        public List<SelectListItem> ListState { get; set; }
 
         // Lưu tổng số recode khi truy vấn lấy danh sách.
         public int Total { get; set; }
 
         public List<AccountModel> ListAccount { get; set; }
+
+        public AccountCondition Condition { get; set; }
         #endregion
     }
 
@@ -87,6 +93,48 @@ namespace MTD.Models
         [Required]
         [Display(Name = "Remember?")]
         public bool Remember { get; set; }
+    }
+
+    /// <summary>
+    /// Điều kiện tìm kiếm tài khoản.
+    /// </summary>
+    public class AccountCondition
+    {
+        // Số trang
+        public int page { get; set; }
+
+        // Kích thước trang
+        public int pageSize { get; set; }
+
+        // Từ khóa tìm kiếm (username, email)
+        public string key { get; set; }
+
+        // Quyền người dùng.
+        public int role { get; set; }
+
+        // Ngày đăng ký (từ ngày ... )
+        public string regis_date_from { get; set; }
+
+        // Ngày đăng ký (đến ngày ... )
+        public string regis_date_to { get; set; }
+
+        // Trạng thái hoạt động
+        public int state { get; set; }
+
+        // Ẩn tài khoản bị xóa.
+        public bool disableDel { get; set; }
+
+        public AccountCondition()
+        {
+            page = 1;
+            pageSize = 20;
+            key = "";
+            role = -1;
+            state = -1;
+            regis_date_from = DateTime.Now.AddYears(-10).ToString("dd/MM/yyyy");
+            regis_date_to = DateTime.Now.ToString("dd/MM/yyyy");
+            disableDel = true;
+        }
     }
 
     public class AccountUpdateModel : BaseModel

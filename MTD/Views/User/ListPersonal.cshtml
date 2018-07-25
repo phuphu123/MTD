@@ -1,0 +1,247 @@
+﻿@model MTD.Models.UserModel
+@using MTD.Helpers
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+@section MainContent{
+
+    <div class="main-content">
+        <div class="main-content-inner">
+            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li class="active red bigger-120">Quản lý thành viên</li><li class="active red bigger-120">
+                        Danh sách tài khoản</li>
+                </ul>
+                <!-- /.nav-search -->
+                <div class="nav-search" id="nav-search">
+					<form class="form-search">
+						<span class="input-icon">
+							<input type="text" placeholder="Search ..." class="nav-search-input" id="nav-search-input" autocomplete="off">
+							<i class="ace-icon fa fa-search nav-search-icon"></i>
+						</span>
+					</form>
+				</div>
+            </div>
+            <div class="page-content">
+                @using (Html.BeginForm("ListPersonal", "User", FormMethod.Get))
+                {
+                    <div class="page-header">
+                        <a href="javascript:void(0);" onclick="window.location.reload()" class="btnDefine btn btn-default">
+                            <i class="fa fa-refresh green m-xxs"></i>Cập nhật</a> 
+                        <a href="@Url.Action("Create", "User")" id="" class="btnDefine btn btn-default">
+                            <i class="fa fa-plus blue m-xxs"></i>Tạo mới</a> 
+                        <a href="@Url.Action("Delete", "User")" id="" class="btnDefine btn btn-default">
+                            <i class="fa fa-trash-o red m-xxs"></i>Xóa</a>
+                    </div>
+                    <div class="nav-search">
+                    </div>
+                    <div class="row">
+                        <div id="modal-table" class="modal fade" tabindex="-1">
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <table id="simple-table" class="table  table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th class="center">
+                                                    <input type="checkbox" />
+                                                </th>
+                                                <th>
+                                                    Tên đăng nhập
+                                                </th>
+                                                <th>
+                                                Ảnh đại diện
+                                                </th>
+                                                <th style="max-width: 150px">
+                                                    Họ tên
+                                                </th>
+                                                <th style="max-width: 100px;">
+                                                    Giới tính
+                                                </th>
+                                                <th style="max-width: 100px">
+                                                    Ngày sinh
+                                                </th>
+                                                <th>
+                                                    Địa chỉ
+                                                </th>
+                                                <th style="max-width:100px;">
+                                                    Số điện thoại
+                                                </th>
+                                                <th style="max-width:300px;">
+                                                    Chức năng
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if (Model.ListUser.Count > 0)
+                                            {
+                                                for (int i = 0; i < Model.ListUser.Count; i++)
+                                                {
+                                                    var user = Model.ListUser[i];
+                                                <tr>
+                                                    <td class="center">
+                                                        <label class="pos-rel">
+                                                            @user.Id
+                                                        </label>
+                                                    </td>
+                                                    <td>
+                                                        @user.UserName
+                                                    </td>
+                                                    <td>
+                                                        <img src="@user.Avatar" height="100px" />
+                                                    </td>
+                                                    <td>
+                                                        <label>
+                                                            <a href="@Url.Action("PersonalInformation", "User", new {@Id=user.Id, @AccountId = user.AccountId })">@user.FirstName @user.LastName</a></label>
+                                                    </td>
+                                                    <td>
+                                                        <label>@(user.Gender == 0? "Chưa xác định": user.Gender==1?"Nam":"Nữ")</label>
+                                                    </td>
+                                                    <td>
+                                                        <label>
+                                                            @user.DateOfBirth
+                                                        </label>
+                                                    </td>
+                                                    <td style="width: 20%">
+                                                        <label title data-original-title="@user.Address" data-toggle="tooltip"> @((user.Address!=null&& user.Address.Length>50)? user.Address.Substring(0,50)+"...":user.Address)</label>
+                                                    </td>
+                                                    <td>
+                                                        @user.PhoneNumber
+                                                    </td>
+                                                    <td>
+                                                        <a href="javascript:void(0);" data-id="@user.Id" class="btnDefine btn btn-default delete-user">
+                                                            <i class="fa fa-trash-o red m-xxs"></i>Xóa</a>
+                                                        <a href="@Url.Action("PersonalInformation", "User", new {@Id=user.Id, @AccountId = user.AccountId })" id="btnEdit" class="btnDefine btn btn-default">
+                                                            <i class="fa fa-edit blue m-xxs"></i>Sửa</a> 
+                                                        
+                                                        <a href="javascript:void(0);" class="btnDefine btn btn-default btn-set-acc" data-id="@user.Id" data-fullName="@user.FirstName @user.LastName">
+                                                            <i class="fa fa-info-circle blue m-xxs"></i>Cập nhật tài khoản</a>
+                                                        
+                                                    </td>
+                                                </tr>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td colspan="8">@Configs.ERROR_NOT_DATA
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                    @Html.Partial("_PagingPartial")
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        
+        <div class="modal fade in" id="model_set_account">
+            <div id="model-container">
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("[data-toggle='tooltip']").tooltip();
+        })
+        $('.show-details-btn').on('click', function (e) {
+            e.preventDefault();
+            $(this).closest('tr').next().toggleClass('open');
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+
+        $("#checkAll").click(function () {
+            $(".check").prop('checked', $(this).prop('checked'));
+        });
+        function UpdateForRow(id) {
+            $("#selectedUser" + id).attr("checked", true);
+        }
+
+        $('#btnDeleteUsers').click(function () {
+            var numberUserChecked = $('input.select-user:checked').length;
+            if (numberUserChecked > 0) {
+                var arrUser = [];
+                $('input.select-user:checked').each(function () {
+                    arrUser.push($(this).val());
+                });
+                if (confirm('@Html.Raw(Configs.CONFIRM_DELETE_USERS)')) {
+                    $.ajax({
+                        url: '@Url.Action("DeleteMultiple", "User", new { area = "Admin" })',
+                        data: JSON.stringify({ usersDelete: arrUser }),
+                        contentType: 'application/json; charset=utf-8',
+                        type: 'POST',
+                        dataType: 'json',
+                        async: false
+                    })
+                    .success(function (result) {
+                        if (result > 0) {
+                            alert('@Html.Raw(Configs.SUCCESS_DELETE)');
+                        } else {
+                            alert('@Html.Raw(Configs.ERROR_DELETE)');
+                        }
+                        window.location.reload(false);
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    });
+                }
+            } else {
+                alert('@Html.Raw(Configs.ALERT_NOT_CHOICE)');
+            }
+        });
+
+        $('.delete-user').click(function () {
+            var userId = $(this).attr("data-id");
+            if (confirm('@Html.Raw(Configs.CONFIRM_DELETE_USERS)')) {
+                $.ajax({
+                    url: '@Url.Action("DeleteUser", "User")',
+                    data: JSON.stringify({ Id: userId }),
+                    contentType: 'application/json; charset=utf-8',
+                    type: 'POST',
+                    dataType: 'json',
+                    async: false
+                })
+                    .success(function (result) {
+                        if (result > 0) {
+                            alert('@Html.Raw(Configs.SUCCESS_DELETE)');
+                        } else {
+                            alert('@Html.Raw(Configs.ERROR_DELETE)');
+                        }
+                        window.location.reload(false);
+                    })
+                    .error(function (xhr, status) {
+                        alert(status);
+                    });
+            }
+        });
+    </script>
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+        $('.btn-set-acc').on('click', function (e) {
+            var userId = $(this).attr("data-id");
+            var fullName = $(this).attr("data-fullName");
+            var url = '@Url.Action("SetAccount", "User")';
+            $.ajax({
+                url: url,
+                type: 'GET',
+                cache: false,
+                data: { userId: userId, FullName:fullName }
+            })
+            .success(function (data) {
+                $('#model-container').html(data);
+                $('#model_set_account').modal('show');
+            })
+            .error(function (xhr, status) {
+                alert(status);
+            });
+        });
+    });
+    </script>
+}

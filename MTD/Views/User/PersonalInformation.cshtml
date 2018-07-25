@@ -1,0 +1,333 @@
+﻿@model MTD.Models.UserModel
+@using MTD.Helpers
+@{
+    ViewBag.Title = "Thông tin cá nhân";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+
+@section MainContent{
+    <link rel="stylesheet" href="@Url.Content("~/Assets/css/bootstrap-datepicker3.min.css")" type="text/css" />
+    <link rel="stylesheet" href="@Url.Content("~/Assets/css/bootstrap-editable.min.css")" type="text/css"/>
+    <div class="main-content">
+        <div class="main-content-inner">
+            @using (Html.BeginForm("PersonalInformation", "User", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                    <ul class="breadcrumb">
+				        <li class="active red bigger-120">Quản lý người dùng</li>
+                        <li class="active red bigger-120">Thông tin cá nhân</li>
+			        </ul>
+                </div>
+                <div class="page-content">
+                    <div class="page-header">
+                        <input type="submit" class="btnDefine btn btn-success" id="btnSave" value="Lưu" />
+                        <a href="@Url.Action("ListPersonal", "User")" class="btnDefine btn btn-primary">Danh sách thành viên</a>
+                        
+                    </div>
+                    <div class="row">                        
+                        <div id="user-profile-1" class="user-profile row">
+                            <div class="col-xs-12 col-sm-3 center">
+                                @Html.HiddenFor(m => m.AccountId)
+                                <div>
+                                    <span class="profile-picture">
+                                        @{
+                                            var avatarFile = Model.Avatar;
+                                            if (string.IsNullOrEmpty(avatarFile))
+                                            {
+                                                avatarFile = "~/Assets/images/avatars/profile-pic.jpg";
+                                            }
+                                        }
+                                        <img id="avatar" class="editable img-responsive" alt="Avatar" src="@Url.Content(avatarFile)" />
+                                        @Html.HiddenFor(m => m.Avatar)
+                                    </span>
+                                    <div class="space-4">
+                                    </div>
+                                    <div class="width-80 label label-info label-xlg arrowed-in arrowed-in-right">
+                                        <div class="inline position-relative">
+                                            <a href="#" class="user-title-label dropdown-toggle" data-toggle="dropdown"><i class="ace-icon fa fa-circle light-green">
+                                            </i>&nbsp; <span class="white">@Model.UserName</span> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="hr hr12 dotted">
+                                </div>
+                                <div class="clearfix">
+                                    
+                                </div>
+                                <div class="hr hr16 dotted">
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-9">
+                                <div class="profile-user-info profile-user-info-striped">
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">
+                                            Tên hiển thị
+                                        </div>
+                                        <div class="profile-info-value">
+                                            @Html.TextBoxFor(m => m.DisplayName, new { @placeholder="Tên hiển thị" })
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">
+                                            Họ tên
+                                        </div>
+                                        <div class="profile-info-value">
+                                            @Html.TextBoxFor(m => m.FirstName, new { @placeholder = "Họ & tên đệm" })
+                                            @Html.TextBoxFor(m => m.LastName, new { @placeholder = "Tên" })
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">
+                                            Địa chỉ
+                                        </div>
+                                        <div class="profile-info-value">
+                                            @Html.DropDownListFor(m => m.CityId, new SelectList(Model.ListCity, "Value", "Text", Model.CityId), "Chọn tỉnh/ thành phố", new { onchange = string.Format("javascript:ListPlaceJson(this.value,'#DistrictId')") })
+                                            @Html.DropDownListFor(m => m.DistrictId, new SelectList(Model.ListDistrict, "Value", "Text", Model.DistrictId), "Chọn quận / huyện", new { onchange = string.Format("javascript:ListPlaceJson(this.value,'#VillageId')") })
+                                            @Html.DropDownListFor(m => m.VillageId, new SelectList(Model.ListVillage, "Value", "Text", Model.VillageId), "Chọn xã/ phường")
+                                            <br /><br />
+                                            @Html.TextAreaFor(m => m.Address, new { @cols="60", @rows="3"})
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">
+                                            Giới tính
+                                        </div>
+                                        <div class="profile-info-value">
+                                            <label>
+                                                <input type="radio" id="Gender" name="Gender" class="ace" value="0" @(Model.Gender==0?"checked":"") />
+                                                <span class="lbl"> Chưa xác định</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" id="Gender" name="Gender" class="ace" value="1" @(Model.Gender==1?"checked":"")/>
+                                                <span class="lbl"> Nam</span>
+                                            </label>
+                                            <label>
+                                                <input type="radio" id="Gender" name="Gender" class="ace" value="2" @(Model.Gender==2?"checked":"")/>
+                                                <span class="lbl"> Nữ</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">
+                                            Ngày sinh
+                                        </div>
+                                        <div class="profile-info-value col-sm-3">
+                                            <span class="block input-icon input-icon-right fetched-date">
+						                        @Html.TextBoxFor(m => m.DateOfBirth, "{0:dd/MM/yyyy}", new { @class = "form-control date-picker", @placeholder = "Ngày sinh", @data_date_format = "dd/mm/yyyy" })
+                                                <i class="ace-icon fa fa-calendar bigger-110"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">
+                                            Giới thiệu
+                                        </div>
+                                        <div class="profile-info-value">
+                                            @Html.TextAreaFor(m => m.Description, new { @cols="60", @rows="3", @placeholder="Giới thiệu" })
+                                        </div>
+                                    </div>
+                                    <div class="profile-info-row">
+                                        <div class="profile-info-name">
+                                            Số điện thoại
+                                        </div>
+                                        <div class="profile-info-value">
+                                            @Html.TextBoxFor(m => m.PhoneNumber, new {@placeholder="Số điện thoại" })
+                                        </div>
+                                        @Html.HiddenFor(m => m.PhoneNumber)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+    <script src="@Url.Content("~/Assets/js/bootstrap-editable.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Assets/js/ace-editable.min.js")" type="text/javascript"></script>
+    <!-- ace scripts -->
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+        
+        jQuery(function ($) {
+
+            //editables on first profile page
+            $.fn.editable.defaults.mode = 'inline';
+            $.fn.editableform.loading = "<div class='editableform-loading'><i class='ace-icon fa fa-spinner fa-spin fa-2x light-blue'></i></div>";
+            $.fn.editableform.buttons = '<button type="submit" class="btn btn-info editable-submit"><i class="ace-icon fa fa-check"></i></button>' +
+			                            '<button type="button" class="btn editable-cancel"><i class="ace-icon fa fa-times"></i></button>';
+
+            // *** editable avatar *** //
+            try {//ie8 throws some harmless exceptions, so let's catch'em
+
+                //first let's add a fake appendChild method for Image element for browsers that have a problem with this
+                //because editable plugin calls appendChild, and it causes errors on IE at unpredicted points
+                try {
+                    document.createElement('IMG').appendChild(document.createElement('B'));
+                } catch (e) {
+                    Image.prototype.appendChild = function (el) { }
+                }
+
+                var last_gritter
+                $('#avatar').editable({
+                    type: 'image',
+                    name: 'avatar',
+                    value: null,
+                    //onblur: 'ignore',  //don't reset or hide editable onblur?!
+                    image: {
+                        //specify ace file input plugin's options here
+                        btn_choose: 'Change Avatar',
+                        droppable: true,
+                        maxSize: 200000, //~200Kb
+
+                        //and a few extra ones here
+                        name: 'avatar', //put the field name here as well, will be used inside the custom plugin
+                        on_error: function (error_type) {//on_error function will be called when the selected file has a problem
+                            if (last_gritter) $.gritter.remove(last_gritter);
+                            if (error_type == 1) {//file format error
+                                last_gritter = $.gritter.add({
+                                    title: 'File vừa chọn không phải file ảnh!',
+                                    text: 'Xin hãy chọn 1 trong các định dạng jpg|gif|png!',
+                                    class_name: 'gritter-error gritter-center'
+                                });
+                            } else if (error_type == 2) {//file size rror
+                                last_gritter = $.gritter.add({
+                                    title: 'Dung lượng file quá lớn!',
+                                    text: 'Dung lượng file tối đa là 200Kb!',
+                                    class_name: 'gritter-error gritter-center'
+                                });
+                            }
+                            else {//other error
+                            }
+                        },
+                        on_success: function () {
+                            $.gritter.removeAll();
+                        }
+                    },
+                    url: function (params) {
+                        // ***UPDATE AVATAR HERE*** //
+                        //for a working upload example you can replace the contents of this function with 
+                        //examples/profile-avatar-update.js
+                        var deferred = new $.Deferred
+
+                        var value = $('#avatar').next().find('input[type=hidden]:eq(0)').val();
+                        if (!value || value.length == 0) {
+                            deferred.resolve();
+                            return deferred.promise();
+                        }
+
+
+                        //dummy upload
+                        setTimeout(function () {
+                            if ("FileReader" in window) {
+                                //for browsers that have a thumbnail of selected image
+                                var thumb = $('#avatar').next().find('img').data('thumb');
+                                if (thumb) $('#avatar').get(0).src = thumb;
+                                $('#Avatar').val(thumb);
+                            }
+
+                            deferred.resolve({ 'status': 'OK' });
+
+                            if (last_gritter) $.gritter.remove(last_gritter);
+                            last_gritter = $.gritter.add({
+                                title: 'Thay Avatar thành công!',
+                                text: 'Avatar mới sẽ được lưu thực sự sau khi cập nhật thông tin!',
+                                class_name: 'gritter-info gritter-center'
+                            });
+                        }, parseInt(Math.random() * 800 + 800))
+
+                        return deferred.promise();
+
+                        // ***END OF UPDATE AVATAR HERE*** //
+                    },
+
+                    success: function (response, newValue) { }
+                })
+            } catch (e) { }
+
+
+            //////////////////////////////
+            $('#profile-feed-1').ace_scroll({
+                height: '250px',
+                mouseWheelLock: true,
+                alwaysVisible: true
+            });
+
+            $('a[ data-original-title]').tooltip();
+
+            $('.easy-pie-chart.percentage').each(function () {
+                var barColor = $(this).data('color') || '#555';
+                var trackColor = '#E2E2E2';
+                var size = parseInt($(this).data('size')) || 72;
+                $(this).easyPieChart({
+                    barColor: barColor,
+                    trackColor: trackColor,
+                    scaleColor: false,
+                    lineCap: 'butt',
+                    lineWidth: parseInt(size / 10),
+                    animate: false,
+                    size: size
+                }).css('color', barColor);
+            });
+
+            ////////////////////
+            //change profile
+            $('[data-toggle="buttons"] .btn').on('click', function (e) {
+                var target = $(this).find('input[type=radio]');
+                var which = parseInt(target.val());
+                $('.user-profile').parent().addClass('hide');
+                $('#user-profile-' + which).parent().removeClass('hide');
+            });
+
+            /////////////////////////////////////
+            $(document).one('ajaxloadstart.page', function (e) {
+                //in ajax mode, remove remaining elements before leaving page
+                try {
+                    $('.editable').editable('destroy');
+                } catch (e) { }
+                $('[class*=select2]').remove();
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.fetched-date input').datepicker({
+                dateFormat: 'dd-mm-yy',
+                minDate: '+5d',
+                changeMonth: true,
+                changeYear: true,
+                altFormat: "yy-mm-dd",
+                autoclose: true
+            });
+        });
+
+        function ListPlaceJson(parentId, toControlId1) {
+            if (parentId != null && parentId != "") {
+                $.ajax({
+                    url: '/Base/ListPlaceJson/',
+                    data: JSON.stringify({ parentId: parentId }),
+                    contentType: 'application/json; charset=UTF-8',
+                    type: 'POST',
+                    dataType: 'json'
+                })
+            .success(function (result) {
+                $(toControlId1).empty();
+                if (result.length > 0) {
+                    // Thêm vào Control 1
+                    for (var i = 0; i < result.length; i++) {
+                        $(toControlId1).append("<option value=" + result[i].Value + ">" + result[i].Text + "</option>");
+                    }
+                }
+            })
+            .error(function (xhr, status) {
+                alert(status);
+            });
+            } else {
+                $(toControlId1).empty();
+            }
+        }
+    </script>
+
+}

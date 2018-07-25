@@ -1,0 +1,26 @@
+﻿@using MTD.Helpers
+@{
+    var listWord = ViewBag.ListWordHistory as List<SelectListItem>;
+}
+<div class="search-filter-header">
+    <h5 class="smaller no-margin-bottom">
+        Lịch sử tìm kiếm
+    </h5>
+</div>
+<div style="height: 420px; overflow: auto;">
+    <ul class="ui-menu ui-widget ui-widget-content" style="width: 95%; margin: 0px 0px;">
+        @if (listWord.Count > 0)
+        {
+            foreach (var item in listWord)
+            {
+            <li class="ui-menu-item" data-id="@item.Value">@item.Text </li>
+            }
+        }
+        else
+        {
+            <li class="ui-menu-item">
+                @Configs.ERROR_NOT_DATA
+            </li>
+        }
+    </ul>
+</div>

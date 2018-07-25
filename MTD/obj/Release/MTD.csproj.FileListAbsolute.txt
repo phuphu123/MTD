@@ -1,3 +1,4 @@
+D:\SVN\MTD\MTD\obj\Release\ResolveAssemblyReference.cache
 D:\SVN\MTD\MTD\bin\MTD.dll
 D:\SVN\MTD\MTD\bin\MTD.pdb
 D:\SVN\MTD\MTD\bin\Antlr3.Runtime.dll
@@ -29,6 +30,5 @@ D:\SVN\MTD\MTD\bin\System.Web.Razor.xml
 D:\SVN\MTD\MTD\bin\System.Web.WebPages.xml
 D:\SVN\MTD\MTD\bin\System.Web.WebPages.Deployment.xml
 D:\SVN\MTD\MTD\bin\System.Web.WebPages.Razor.xml
-D:\SVN\MTD\MTD\obj\Release\ResolveAssemblyReference.cache
 D:\SVN\MTD\MTD\obj\Release\MTD.dll
 D:\SVN\MTD\MTD\obj\Release\MTD.pdb

@@ -22,6 +22,15 @@ namespace MTD
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            SetGlobalVariable();
+        }
+
+        private void SetGlobalVariable()
+        {
+            Services.WordsService service = new Services.WordsService();
+            List<SelectListItem> listDictType = service.ListDictType();
+            Application["LIST_DICT_TYPE"] = listDictType;
         }
     }
 }

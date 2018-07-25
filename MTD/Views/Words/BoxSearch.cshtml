@@ -1,0 +1,78 @@
+﻿@model MTD.Models.WordsCondition
+@using MTD.Helpers
+
+<style>
+    .highlight {
+      background-color: red;
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //highlight();
+        $("input").keydown(function () {
+            $("input").css("background-color", "yellow");
+        });
+    });
+    function highlight(text) {
+        //var text = document.getElementById("SearchText").value;
+        if (text.length > 0) {
+            var inputText = document.getElementById("listWord");
+            var innerHTML = inputText.innerHTML;
+            var index = innerHTML.indexOf(text);
+            if (index >= 0) {
+                innerHTML = innerHTML.substring(0, index) + "<span class='highlight'>" + innerHTML.substring(index, index + text.length) + "</span>" + innerHTML.substring(index + text.length);
+                inputText.innerHTML = innerHTML;
+            }
+        }
+    }
+</script>
+
+<div class="search-area well well-sm">
+    <div class="search-filter-header bg-primary">
+        <h5 class="smaller no-margin-bottom">
+            <i class="ace-icon fa fa-sliders light-green bigger-130"></i>&nbsp; Tìm kiếm
+        </h5>
+    </div>
+    <div class="space-10">
+    </div>
+    @using (Html.BeginForm("Index", "Words", FormMethod.Get, new { @id = "formSearch" }))
+    {
+        <div class="row" style="padding-bottom: 3px;">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                @Html.DropDownListFor(m => m.DictType, new SelectList(@ViewBag.ListDictType, "Value", "Text"), new { @class = "col-sm-12", @onchange = "this.form.submit()" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                @Html.TextBoxFor(m => m.SearchText, new { @onchange = "this.form.submit()", @onkeypress = "highlight(this.value)", @placeholder = "Từ khóa", @class = "col-sm-12", @list = "listWords", @autocomplete = "false" })
+            </div>
+            @*<datalist id="listWords">
+                @foreach (var item in Model.ListWordSuggest)
+                {
+                    <option value="@item.Text"></option>
+                }
+                
+            </datalist>*@
+        </div>
+    }
+    <div class="hr hr-dotted">
+    </div>
+    <div style="height: 420px; overflow: auto;" id="listWord">
+        <ul class="ui-menu ui-widget ui-widget-content" style="width: 95%; margin: 0px 0px;">
+            @if (Model.ListWordSuggest.Count > 0)
+            {
+                foreach (var item in Model.ListWordSuggest)
+                {
+                <li class="ui-menu-item" data-id="@item.Value">@item.Text </li>
+                }
+            }
+            else
+            {
+                <li class="ui-menu-item">
+                    @Configs.ERROR_NOT_DATA
+                </li>
+            }
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+﻿@using MTD.Helpers
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MainContent{
+    <div class="col-xs-12 col-sm-2">
+        @Html.Partial("BoxSearch")
+    </div>
+    @if (CookieHelper.Get(Configs.COOKIES_ACCOUNT_ID) != null)
+    {
+        <div class="col-xs-12 col-sm-8">
+            @Html.Partial("BoxResult")
+        </div>
+        <div class="col-xs-12 col-sm-2">
+            @Html.Partial("BoxHistory")
+        </div>
+    }
+    else
+    {
+        <div class="col-xs-12 col-sm-10">
+            @Html.Partial("BoxResult")
+        </div>
+    }
+    <script type="text/javascript">
+        $(".ui-menu-item").click(function () {
+            var Id = $(this).attr('data-id');
+            var url = window.location.href;
+            url = replaceUrlParam(url, "Id", Id);
+            window.location.href = url;
+        });
+
+        function replaceUrlParam(url, paramName, paramValue) {
+            if (paramValue == null) {
+                paramValue = '';
+            }
+            var pattern = new RegExp('\\b(' + paramName + '=).*?(&|$)');
+            if (url.search(pattern) >= 0) {
+                return url.replace(pattern, '$1' + paramValue + '$2');
+            }
+            url = url.replace(/\?$/, '');
+            return url + (url.indexOf('?') > 0 ? '&' : '?') + paramName + '=' + paramValue;
+        }
+    </script>
+}

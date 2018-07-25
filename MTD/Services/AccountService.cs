@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using MTD.DAL;
 using MTD.Models;
-using MTD.Helper;
+using MTD.Helpers;
 
 namespace MTD.Services
 {
@@ -13,10 +13,15 @@ namespace MTD.Services
         public AccountService() : base() { }
         public List<AccountModel> List(AccountCondition condition)
         {
+            if (condition.key == null) condition.key = "";
             var query = (from e in Context.tblAccounts
                          join r in Context.tblRoles on e.RoleId equals r.Id
-                         where (condition.key.Length > 0 ? e.UserName == condition.key || e.Email == condition.key : true)
-                         && e.Del_Flag == false
+                         where (condition.key.Length > 0 ? e.UserName.Contains(condition.key) || e.Email.Contains(condition.key) : true)
+                         && (condition.disableDel? e.Del_Flag==false: true) // Điều kiện ẩn tài khoản bị xóa
+                         && (condition.role > -1 ? e.RoleId == condition.role : true) // Điều kiện quyền sử dụng.
+                         && (condition.state > -1 ? e.State == condition.state : true) // Điều kiện trạng thái hoạt động.
+                         && (condition.regis_date_from != null ? e.Register_Date >= DateTime.ParseExact(condition.regis_date_from, "dd/MM/yyyy", null) : true)
+                         && (condition.regis_date_to != null ? e.Register_Date <= DateTime.ParseExact(condition.regis_date_to, "dd/MM/yyyy", null) : true)
                             select new AccountModel()
                             {
                                 Id = e.Id,
@@ -348,6 +353,11 @@ namespace MTD.Services
             return result;
         }
 
+        /// <summary>
+        /// Lấy tài khoản cập nhật.
+        /// </summary>
+        /// <param name="aId"></param>
+        /// <returns></returns>
         public AccountUpdateModel GetAccountUpdateById(int aId)
         {
             var result = (from a in Context.tblAccounts
@@ -363,6 +373,34 @@ namespace MTD.Services
                               RoleId = a.RoleId
                           }).FirstOrDefault();
             return result;
+        }
+
+        /// <summary>
+        /// Xử lý cập nhật trạng thái xóa nhiều người.
+        /// </summary>
+        /// <param name="usersDelete"></param>
+        /// <returns></returns>
+        public int DeleteMultiple(int[] usersDelete)
+        {
+            try
+            {
+                using (MTDDataContext db = new MTDDataContext())
+                {
+                    db.tblAccounts
+                    .Where(u => usersDelete.Contains(u.Id))
+                    .ToList()
+                    .ForEach(u => { u.Del_Flag = true; });
+                    db.SubmitChanges();
+                }
+                return 1;
+            }
+            catch (Exception ex)
+            {
+                string strErr = "Lỗi xóa tài khoản Id: " + string.Join(",", usersDelete);
+                strErr += "\\n" + ex.ToString();
+                Logs.LogWrite(strErr);
+                return -1;
+            }
         }
     }
 }

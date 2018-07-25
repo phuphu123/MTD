@@ -16,7 +16,7 @@ namespace MTD
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{Id}",
-                defaults: new { controller = "Word", action = "Index", Id = UrlParameter.Optional }
+                defaults: new { controller = "Words", action = "Index", Id = UrlParameter.Optional }
             );
         }
     }

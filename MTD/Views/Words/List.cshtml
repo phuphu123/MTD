@@ -1,0 +1,188 @@
+﻿@model MTD.Models.WordsModel
+@using MTD.Helpers
+@{
+    ViewBag.Title = "Danh sách từ vựng";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+@section MainContent{
+    <div class="main-content-inner">
+        <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li class="active red bigger-120">Quản lý từ điển</li>
+                <li class="active red bigger-120">Danh sách từ vựng</li>
+            </ul>
+            <!-- /.nav-search -->
+            <div class="nav-search">
+                @using (Html.BeginForm("List", "Words", FormMethod.Get, new { @class = "form-search" }))
+                {
+                    <select>
+                        <option>1</option>
+                    </select>
+                    
+                    <span class="input-icon">
+                        @Html.TextBoxFor(m => m.condition.SearchText, new { @class = "nav-search-input" }) 
+                        <i class="ace-icon fa fa-search nav-search-icon">
+                        </i></span>
+                }
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="page-header">
+                <a href="javascript:void(0);" onclick="window.location.reload()" class="btnDefine btn btn-default">
+                    <i class="fa fa-refresh green m-xxs margin-y-md"></i>Cập nhật
+                </a>
+                <a href="@Url.Action("Update", "Words", new { Id = 0 })" id="" class="btnDefine btn btn-default">
+                    <i class="fa fa-plus blue m-xxs"></i>Thêm từ
+                </a>
+                <a href="@Url.Action("ExcelUpload", "Words")" id="" class="btnDefine btn btn-default">
+                    <i class="fa fa-upload blue m-xxs"></i>Cập nhật từ file Excel
+                </a>
+                <a href="@Url.Action("DownloadTemplate", "Words")" id="" class="btnDefine btn btn-default">
+                    <i class="fa fa-download blue m-xxs"></i>Tải file mẫu
+                </a>
+            </div>
+            <div class="row">
+                <div id="modal-table" class="modal fade" tabindex="-1">
+                </div>
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                    <tr>
+                                        <th class="center">
+                                            ID
+                                        </th>
+                                        <th style="max-width: 100px">
+                                            Kiểu từ điển
+                                        </th>
+                                        <th style="max-width: 200px">
+                                            Từ vựng
+                                        </th>
+                                        <th style="max-width: 150px">
+                                            Viết tắt
+                                        </th>
+                                        <th style="max-width: 400px">
+                                            Ý nghĩa
+                                        </th>
+                                        <th style="max-width: 120px">
+                                            Trạng thái
+                                        </th>
+                                        <th>
+                                            Chức năng
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.ListWord.Count > 0)
+                                    {
+                                        for (int i = 0; i < Model.ListWord.Count; i++)
+                                        {
+                                            var word = Model.ListWord[i];
+                                        <tr>
+                                            <td class="center">
+                                                <label class="pos-rel">
+                                                    @word.Id
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label>@word.DictTypeText</label>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    <a href="@Url.Action("Update", "Words", new { @Id = word.Id })">@word.Key</a>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    @word.ShortCut</label>
+                                            </td>
+                                            <td>
+                                                <label>@(word.Value.Length > 100 ? word.Value.Substring(0, 100) + "..." : word.Value)</label>
+                                            </td>
+                                            <td>
+                                                <label>
+                                                    <input type="checkbox" name="State" value="@word.State" id="State" @(word.State == 1 ? "checked" : "") data-id="@word.Id" class="ace ace-switch ace-switch-3 word-state"/>
+                                                    <span class="lbl"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <a href="javascript:void(0);" data-id="@word.Id" class="btnDefine btn btn-default confirm-delete">
+                                                    <i class="fa fa-trash-o red m-xxs"></i>Xóa</a> <a href="@Url.Action("Update", "Words", new { @Id = word.Id })" id="btnEdit" class="btnDefine btn btn-default">
+                                                        <i class="fa fa-edit blue m-xxs"></i>Sửa</a>
+                                            </td>
+                                        </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="7">
+                                                <span class="red">@Configs.ERROR_NOT_DATA</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                            @Html.Partial("_PagingPartial")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $('.word-state').on('click', function () {
+            var wordId = $(this).attr("data-id");
+            var val = $(this).val();
+            var state = 0;
+            if (val == "1") {
+                state = 0;
+            } else {
+                state = 1;
+            }
+            $.ajax({
+                url: '@Url.Action("UpdateState", "Words")',
+                data: JSON.stringify({ Id: wordId, state: state }),
+                contentType: 'application/json; charset=utf-8',
+                type: 'POST',
+                dataType: 'json',
+                async: false
+            })
+                .success(function (result) {
+                    if (result < 0) {
+                        alert('@Html.Raw(Configs.ERROR_UPDATE)');
+                    }
+                    window.location.reload(false);
+                })
+                .error(function (xhr, status) {
+                    alert(status);
+                });
+        });
+        $('.confirm-delete').on('click', function () {
+            var wordId = $(this).attr("data-id");
+            if (confirm('@Html.Raw(Configs.CONFIRM_DELETE_WORD)')) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Words")',
+                    data: JSON.stringify({ Id: wordId }),
+                    contentType: 'application/json; charset=utf-8',
+                    type: 'POST',
+                    dataType: 'json',
+                    async: false
+                })
+                .success(function (result) {
+                    if (result > 0) {
+                        alert('@Html.Raw(Configs.SUCCESS_DELETE)');
+                    } else {
+                        alert('@Html.Raw(Configs.ERROR_DELETE)');
+                    }
+                    window.location.reload(false);
+                })
+                .error(function (xhr, status) {
+                    alert(status);
+                });
+            }
+        });
+
+    </script>
+}

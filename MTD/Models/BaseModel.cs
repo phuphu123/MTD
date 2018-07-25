@@ -14,17 +14,4 @@ namespace MTD.Models
         public string Redirect { get; set; }
     }
 
-    public class AccountCondition
-    {
-        public int page { get; set; }
-        public int pageSize { get; set; }
-        public string key { get; set; }
-
-        public AccountCondition()
-        {
-            page = 1;
-            pageSize = 3;
-            key = "";
-        }
-    }
 }

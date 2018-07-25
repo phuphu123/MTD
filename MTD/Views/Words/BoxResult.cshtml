@@ -1,0 +1,22 @@
+﻿@{
+    var word = ViewBag.WordsModel as MTD.Models.WordsModel;
+}
+@if (word.Key != null)
+{
+<div class="page-header">
+	<h4>
+		<span class="blue">Nghĩa của từ: </span><strong class="red">@word.Key</strong>
+	</h4>
+</div>
+<div class="row">
+    @Html.Raw(word.Value)
+</div>
+}
+else
+{
+    <div class="page-header">
+	<h4 class="red">
+		Bạn chưa chọn từ vựng.
+	</h4>
+</div>
+}

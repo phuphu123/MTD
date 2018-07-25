@@ -92,3 +92,47 @@ The statement has been terminated.
    at System.Data.Linq.DataContext.SubmitChanges()
    at MTD.Models.AccountModel.Insert(AccountModel model) in D:\SVN\MTD\MTD\Models\AccountModel.cs:line 115
 -------------------------------
+10:56:53 AM Wednesday, July 04, 2018
+Lỗi cập nhật từ vựng: \nSystem.Data.SqlClient.SqlException (0x80131904): Cannot insert the value NULL into column 'Value', table 'MTD.dbo.tblWords'; column does not allow nulls. INSERT fails.
+The statement has been terminated.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning()
+   at System.Data.SqlClient.TdsParser.Run(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj)
+   at System.Data.SqlClient.SqlDataReader.ConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, DbAsyncResult result)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader()
+   at System.Data.Linq.SqlClient.SqlProvider.Execute(Expression query, QueryInfo queryInfo, IObjectReaderFactory factory, Object[] parentArgs, Object[] userArgs, ICompiledSubQuery[] subQueries, Object lastResult)
+   at System.Data.Linq.SqlClient.SqlProvider.ExecuteAll(Expression query, QueryInfo[] queryInfos, IObjectReaderFactory factory, Object[] userArguments, ICompiledSubQuery[] subQueries)
+   at System.Data.Linq.SqlClient.SqlProvider.System.Data.Linq.Provider.IProvider.Execute(Expression query)
+   at System.Data.Linq.ChangeDirector.StandardChangeDirector.DynamicInsert(TrackedObject item)
+   at System.Data.Linq.ChangeDirector.StandardChangeDirector.Insert(TrackedObject item)
+   at System.Data.Linq.ChangeProcessor.SubmitChanges(ConflictMode failureMode)
+   at System.Data.Linq.DataContext.SubmitChanges(ConflictMode failureMode)
+   at System.Data.Linq.DataContext.SubmitChanges()
+   at MTD.Services.WordsService.Save(WordsModel model) in D:\SVN\MTD\MTD\Services\WordsService.cs:line 118
+-------------------------------
+6:45:21 PM Wednesday, July 04, 2018
+Lỗi cập nhật lịch sử tra từ: \nSystem.NullReferenceException: Object reference not set to an instance of an object.
+   at MTD.Services.WordsService.UpdateWordHistory(Int32 wordId, Int32 userId) in D:\SVN\MTD\MTD\Services\WordsService.cs:line 273
+-------------------------------
+6:45:24 PM Wednesday, July 04, 2018
+Lỗi cập nhật lịch sử tra từ: \nSystem.NullReferenceException: Object reference not set to an instance of an object.
+   at MTD.Services.WordsService.UpdateWordHistory(Int32 wordId, Int32 userId) in D:\SVN\MTD\MTD\Services\WordsService.cs:line 273
+-------------------------------
+6:45:56 PM Wednesday, July 04, 2018
+Lỗi cập nhật lịch sử tra từ: \nSystem.NullReferenceException: Object reference not set to an instance of an object.
+   at MTD.Services.WordsService.UpdateWordHistory(Int32 wordId, Int32 userId) in D:\SVN\MTD\MTD\Services\WordsService.cs:line 273
+-------------------------------
+4:38:03 PM Friday, July 06, 2018
+Lỗi cập nhật thông tin cá nhân Id: 0\nSystem.FormatException: String was not recognized as a valid DateTime.
+   at System.DateTimeParse.ParseExact(String s, String format, DateTimeFormatInfo dtfi, DateTimeStyles style)
+   at System.DateTime.ParseExact(String s, String format, IFormatProvider provider)
+   at MTD.Services.UserService.Update(UserModel model) in D:\SVN\MTD\MTD\Services\UserService.cs:line 95
+-------------------------------

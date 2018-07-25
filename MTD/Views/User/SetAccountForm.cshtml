@@ -1,0 +1,78 @@
+﻿@model MTD.Models.UserAccountModel
+<div class="modal-dialog">
+	<div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h4 class="orange center lighter bigger"><i class="ace-icon fa fa-users blue"></i>CẬP NHẬT TÀI KHOẢN</h4>
+            
+        </div>
+        @using (Ajax.BeginForm("SetAccount", "User", FormMethod.Post,
+                            new AjaxOptions
+                            {
+                                InsertionMode = InsertionMode.Replace,
+                                HttpMethod = "POST"
+                            }))
+        {
+            @Html.AntiForgeryToken()
+            <div class="modal-body">
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <fieldset>
+                            @Html.HiddenFor(m => m.Id)
+                            <h5>Họ tên: @Model.FullName</h5>
+                            @Html.HiddenFor(m => m.FullName)
+				            <label class="block clearfix">
+                                Tài khoản:   @Html.DropDownListFor(m => m.AccountId, new SelectList(Model.ListAccount, "Value", "Text", Model.AccountId))
+				            </label>
+
+				            <div class="clearfix">
+					            <button type="button" id="btnRegister" class="width-100 btn btn-sm btn-success">
+						            <span class="orange bigger-150">Cập nhật</span>
+						            <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+					            </button>
+				            </div>
+			            </fieldset>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script type="text/javascript">
+    var message = '@Html.Raw(Model.Message)';
+    var result = '@Model.Result';
+    if (result == 'True') {
+        if (message.length > 0) {
+            alert(message);
+        }
+        $('#model_set_account').modal('hide');
+        location.reload(false)
+    } else if (result < 0) {
+        alert(message);
+    }
+
+    $('#btnRegister').on('click', function (e) {
+        var self = $(this);
+        $.ajax({
+            url: '@Url.Action("SetAccount","User")',
+            type: 'POST',
+            async: false,
+            data: self.closest('form').serialize(),
+            success: function (data) {
+                var message = '@Html.Raw(Model.Message)';
+                var result = '@Model.Result';
+                if (result == 'True') {
+                    $('#model_set_account').modal('hide');
+                    location.reload(false)
+                } else {
+                    if (result == 'False' && message.length > 0) {
+                        alert(message);
+                    }
+                    $('#model_set_account').html(data);
+                }
+            }
+        });
+        e.preventDefault();
+    });
+
+</script>

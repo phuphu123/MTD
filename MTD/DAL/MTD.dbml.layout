@@ -2,16 +2,46 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="MTD">
   <DataContextMoniker Name="/MTDDataContext" />
   <nestedChildShapes>
-    <classShape Id="fb5402bf-6bd7-4f9a-80fb-82dac579d5a4" absoluteBounds="3, 0.625, 2, 1.3862939453125">
+    <classShape Id="fb5402bf-6bd7-4f9a-80fb-82dac579d5a4" absoluteBounds="0.5, 5.375, 2, 1.3862939453125">
       <DataClassMoniker Name="/MTDDataContext/tblRole" />
       <nestedChildShapes>
-        <elementListCompartment Id="b4af9939-ba28-42a4-b7c5-750f12ab5f79" absoluteBounds="3.015, 1.085, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="b4af9939-ba28-42a4-b7c5-750f12ab5f79" absoluteBounds="0.51500000000000012, 5.835, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="53929f10-093b-47fb-8046-52c1a5e920b7" absoluteBounds="0.5, 0.5, 2, 2.7324039713541666">
+    <classShape Id="53929f10-093b-47fb-8046-52c1a5e920b7" absoluteBounds="2.875, 4, 2, 2.7324039713541666">
       <DataClassMoniker Name="/MTDDataContext/tblAccount" />
       <nestedChildShapes>
-        <elementListCompartment Id="65895442-d053-4112-925d-03827c95a33f" absoluteBounds="0.515, 0.96, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="65895442-d053-4112-925d-03827c95a33f" absoluteBounds="2.89, 4.46, 1.9700000000000002, 2.1724039713541665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="769c6772-94b1-4499-bd07-3523b775cd5d" absoluteBounds="5.375, 0.625, 2, 1.3862939453125">
+      <DataClassMoniker Name="/MTDDataContext/tblDictType" />
+      <nestedChildShapes>
+        <elementListCompartment Id="2021ef03-a526-43bb-a16a-7a907b45c420" absoluteBounds="5.39, 1.085, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="f9395f19-584d-49d0-aa29-1c74666bcf8f" absoluteBounds="2.875, 0.625, 2, 2.9247054036458331">
+      <DataClassMoniker Name="/MTDDataContext/tblWord" />
+      <nestedChildShapes>
+        <elementListCompartment Id="d169b03a-8f1a-4f46-bcf4-85ea1daf1007" absoluteBounds="2.89, 1.085, 1.9700000000000002, 2.364705403645833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="291f5032-0f29-4368-b0bf-f43b52a9460d" absoluteBounds="5.25, 2.375, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/MTDDataContext/tblWordHistory" />
+      <nestedChildShapes>
+        <elementListCompartment Id="1cd89c5e-3ec3-4c49-9b6a-7d60f95dad92" absoluteBounds="5.265, 2.835, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="763c39a6-d325-405d-80ae-e0a4bc7486f6" absoluteBounds="5.625, 4.25, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/MTDDataContext/tblPlace" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c683429b-d238-4e77-aef6-eb128cbc4dc4" absoluteBounds="5.64, 4.71, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3328aa2d-55e8-42db-a37e-8c5f24638095" absoluteBounds="0.5, 0.625, 2, 4.2708154296875">
+      <DataClassMoniker Name="/MTDDataContext/tblUser" />
+      <nestedChildShapes>
+        <elementListCompartment Id="274292e9-d0a1-45cc-ae06-f7a9bea4772a" absoluteBounds="0.51500000000000012, 1.085, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
